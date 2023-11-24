@@ -151,13 +151,26 @@ public class barrigaTest {
         .body("msg", hasItem("Data da movimentação ser menor ou igual a data atual"));
     }
 
+    @Test
+    public void naoDeveRemoverContaComMovimentacao(){
+
+        given()
+                .header("Authorization", "JWT ", TOKEN)
+                .when()
+                .delete("contas/17585")
+                .then()
+                .log().all()
+                .statusCode(500)
+        .body("constraint", is("transacoes_conta_id_foreign"));
+    }
+
     private Movimentacao getMovimentacaoValida (){
 
         Movimentacao mov = new Movimentacao();
         mov.setConta_id(17585);
         //mov.setUsuario_id(usuario_id);
         mov.setDescricao("Descricao da movimentacao");
-        mov.setEnvolvido("envlvido na mov");
+        mov.setEnvolvido("envolvido na mov");
         mov.setTipo("REC");
         mov.setData_transacao("01/01/2000");
         mov.setData_pagamento("10/05/2010");
@@ -165,4 +178,6 @@ public class barrigaTest {
         mov.setStatus(true);
         return mov;
     }
+
+
 }
