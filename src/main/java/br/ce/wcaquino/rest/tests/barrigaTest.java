@@ -107,5 +107,28 @@ public class barrigaTest {
                 .then()
                 .log().all()
                 .statusCode(201);
-                }
-}
+    }
+
+    @Test
+    public void deveValidarCamposObrigatoriosNaMovimentacao() {
+
+        given()
+                .header("Authorization", "JWT ", TOKEN)
+                .body("{}")
+                .when()
+                .post("/transacoes")
+                .then()
+                .log().all()
+                .statusCode(400)
+                .body("$", hasSize(8))
+                .body("msg", hasItems(
+                        "Data da movimentação é obrigatório",
+                        "Data do pagamento é obrigatório",
+                        "Descrição é obrigatório",
+                        "Interessado é obrigatório",
+                        "Valor é obrigatório",
+                        "Valor deve ser um número",
+                        "Conta é obrigatório",
+                        "Situação é obrigatório"));
+    }
+}  
