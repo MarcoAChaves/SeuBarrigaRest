@@ -131,4 +131,38 @@ public class barrigaTest {
                         "Conta é obrigatório",
                         "Situação é obrigatório"));
     }
-}  
+
+    @Test
+    public void naoDeveInserirMovimentacaoComDataFutura (){
+
+        Movimentacao mov = getMovimentacaoValida();
+        mov.setData_transacao("20/05/2025");
+
+
+        given()
+                .header("Authorization", "JWT ", TOKEN)
+                .body(mov)
+                .when()
+                .post("/transacoes")
+                .then()
+                .log().all()
+                .statusCode(400)
+                .body("$", hasSize(1))
+        .body("msg", hasItem("Data da movimentação ser menor ou igual a data atual"));
+    }
+
+    private Movimentacao getMovimentacaoValida (){
+
+        Movimentacao mov = new Movimentacao();
+        mov.setConta_id(17585);
+        //mov.setUsuario_id(usuario_id);
+        mov.setDescricao("Descricao da movimentacao");
+        mov.setEnvolvido("envlvido na mov");
+        mov.setTipo("REC");
+        mov.setData_transacao("01/01/2000");
+        mov.setData_pagamento("10/05/2010");
+        mov.setValor(100f);
+        mov.setStatus(true);
+        return mov;
+    }
+}
