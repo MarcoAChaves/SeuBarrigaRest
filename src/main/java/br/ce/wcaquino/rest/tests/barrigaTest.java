@@ -177,6 +177,18 @@ public class barrigaTest {
         .body("find{it.conta_id == 17585}.saldo", is("100.00"));
     }
 
+    @Test
+    public void deveRemoverMovimentacao(){
+
+        given()
+                .header("Authorization", "JWT ", TOKEN)
+                .when()
+                .delete("/transacoes/11588")
+                .then()
+                .log().all()
+                .statusCode(204);
+    }
+
     private Movimentacao getMovimentacaoValida (){
 
         Movimentacao mov = new Movimentacao();
