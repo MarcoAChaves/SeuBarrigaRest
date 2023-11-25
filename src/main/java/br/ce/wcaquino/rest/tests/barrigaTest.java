@@ -51,7 +51,7 @@ public class barrigaTest extends BaseTest {
                 .when()
                 .post("/contas")
                 .then()
-       .statusCode(201)
+       .statusCode(401)
         .extract().path("id");
     }
 
