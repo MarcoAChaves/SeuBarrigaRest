@@ -16,7 +16,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class barrigaTest extends BaseTest {
+public class BarrigaTest extends BaseTest {
 
 
     //private String TOKEN;
@@ -39,7 +39,7 @@ public class barrigaTest extends BaseTest {
                 .statusCode(200)
                 .extract().path("token");
 
-        RestAssured.requestSpecification.header("Authorization", "JWT" + TOKEN);
+        RestAssured.requestSpecification.header("Authorization", "JWT" +  TOKEN);
     }
 
 
@@ -51,7 +51,7 @@ public class barrigaTest extends BaseTest {
                 .when()
                 .post("/contas")
                 .then()
-       .statusCode(401)
+       .statusCode(200)
         .extract().path("id");
     }
 
