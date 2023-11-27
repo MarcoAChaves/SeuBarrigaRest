@@ -3,36 +3,15 @@ package br.ce.wcaquino.rest.refact;
 import br.ce.wcaquino.rest.core.BaseTest;
 import br.ce.wcaquino.rest.tests.Movimentacao;
 import br.ce.wcaquino.rest.tests.utils.DataUtils;
-import io.restassured.RestAssured;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
 
+import static br.ce.wcaquino.rest.tests.utils.BarrigaUtils.getIdContaPeloNome;
+import static br.ce.wcaquino.rest.tests.utils.BarrigaUtils.getIdMovPelaDescricao;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class MovimentacaoTest extends BaseTest {
-
-    @BeforeClass
-    public static void login() {
-        Map<String, String> login = new HashMap<>();
-        login.put("email", "wagner@aquino");
-        login.put("senha", "123456");
-
-        String TOKEN = given()
-                .body(login)
-                .when()
-                .post("/signin")
-                .then()
-                .statusCode(200)
-                .extract().path("token");
-
-        RestAssured.requestSpecification.header("Authorization", "JWT" +  TOKEN);
-
-        RestAssured.get("/reset").then().statusCode(200);
-    }
 
     @Test
     public void deveInserirMovimentacaoComSucesso (){
@@ -130,11 +109,4 @@ public class MovimentacaoTest extends BaseTest {
                 .statusCode(204);
     }
 
-    public Integer getIdContaPeloNome(String nome){
-        return RestAssured.get("/contas?nome=" +nome).then().extract().path("id[0]");
-    }
-
-    public Integer getIdMovPelaDescricao(String desc){
-        return RestAssured.get("/transacoes?descricao=" +desc).then().extract().path("id[0]");
-    }
 }

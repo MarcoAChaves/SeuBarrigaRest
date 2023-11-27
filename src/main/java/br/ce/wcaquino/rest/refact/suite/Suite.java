@@ -1,24 +1,33 @@
-package br.ce.wcaquino.rest.refact;
+package br.ce.wcaquino.rest.refact.suite;
 
 import br.ce.wcaquino.rest.core.BaseTest;
+import br.ce.wcaquino.rest.refact.AuthTest;
+import br.ce.wcaquino.rest.refact.ContasTest;
+import br.ce.wcaquino.rest.refact.MovimentacaoTest;
+import br.ce.wcaquino.rest.refact.SaldoTest;
 import io.restassured.RestAssured;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static br.ce.wcaquino.rest.tests.utils.BarrigaUtils.getIdContaPeloNome;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
 
-public class SaldoTest extends BaseTest {
+@RunWith(org.junit.runners.Suite.class)
+@org.junit.runners.Suite.SuiteClasses({
+        ContasTest.class,
+        MovimentacaoTest.class,
+        SaldoTest.class,
+        AuthTest.class,
+})
+public class Suite extends BaseTest {
 
     @BeforeClass
     public static void login() {
         Map<String, String> login = new HashMap<>();
-        login.put("email", "wagner@aquino");
-        login.put("senha", "123456");
+        login.put("email", "marco4jet@hotmail.com");
+        login.put("senha", "Ma180841");
 
         String TOKEN = given()
                 .body(login)
@@ -32,20 +41,5 @@ public class SaldoTest extends BaseTest {
 
         RestAssured.get("/reset").then().statusCode(200);
     }
-
-    @Test
-    public void deveCalcularSaldoContas(){
-        Integer CONTA_ID = getIdContaPeloNome("Conta para saldo");
-
-        given()
-                .when()
-                .get("saldo")
-                .then()
-                .log().all()
-                .statusCode(200)
-                .body("find{it.conta_id == "+CONTA_ID+"}.saldo", is("534.00"));
-    }
-
-
 
 }
