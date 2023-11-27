@@ -170,6 +170,7 @@ public class BarrigaTest extends BaseTest {
                 .log().all()
                 .statusCode(204);
     }
+
     @Test
     public void t11_naoDeveAcessarAPISemToken(){
 
